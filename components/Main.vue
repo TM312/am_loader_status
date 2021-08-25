@@ -86,7 +86,7 @@
         </p>
         <div class="my-5 inline-flex rounded-md shadow">
           <button
-            @click="fetchSomething"
+            @click="listObjects"
             class="
               inline-flex
               items-center
@@ -124,39 +124,27 @@ export default {
       buttonClicked: null,
     };
   },
+
   methods: {
-    async fetchSomething() {
-      const ip = await this.$axios.$get("http://icanhazip.com");
-      this.ip = ip;
-      this.buttonClicked = true;
-    },
     async listObjects() {
-      const s3 = new aws.S3({
-        apiVersion: "latest",
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-        region: process.env.AWS_DEFAULT_REGION,
-      });
-      var params = {
-        Bucket: process.env.BUCKET_NAME,
-      };
       try {
-        s3.listObjectsV2(params, function (err, data) {
-          this.response = data; // successful response
-        });
-      } catch (err) {
-        console.log("Error", err);
+        const res = await this.$aws.listObjects();
+        this.response = res;
+      } catch (e) {
+        console.log(e);
+        this.response = true;
+        this.buttonClicked = true;
       }
     },
   },
   computed: {
     result() {
       if (this.buttonClicked) {
-        return this.ip ? "Yes, baby!" : "No";
+        return this.result ? "Yes, baby!" : "No";
       } else return null;
     },
     color() {
-      return this.ip ? "text-green-500" : "text-red-500";
+      return this.result ? "text-green-500" : "text-red-500";
     },
   },
 };
