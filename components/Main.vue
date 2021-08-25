@@ -102,7 +102,7 @@
               hover:bg-indigo-700
             "
           >
-            Click to check the S3 bucket
+            Click to check
           </button>
         </div>
       </div>
