@@ -106,7 +106,9 @@
           </button>
         </div>
       </div>
-      <div :class="color" class="mt-24 text-2xl">{{ result }}</div>
+      <div v-if="buttonClicked" :class="color" class="mt-24 text-2xl">
+        {{ result }}
+      </div>
     </div>
   </div>
 </template>
@@ -119,12 +121,14 @@ export default {
     return {
       ip: null,
       response: null,
+      buttonClicked: null,
     };
   },
   methods: {
     async fetchSomething() {
       const ip = await this.$axios.$get("http://icanhazip.com");
       this.ip = ip;
+      this.buttonClicked = true;
     },
     async listObjects() {
       const s3 = new aws.S3({
@@ -147,7 +151,9 @@ export default {
   },
   computed: {
     result() {
-      return this.ip ? "Yes, baby!" : "No";
+      if (this.buttonClicked) {
+        return this.ip ? "Yes, baby!" : "No";
+      } else return null;
     },
     color() {
       return this.ip ? "text-green-500" : "text-red-500";
