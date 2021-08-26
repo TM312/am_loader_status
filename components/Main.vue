@@ -140,13 +140,14 @@ export default {
 
   methods: {
     async listObjects() {
-      try {
-        const res = await this.$aws.listObjects();
-        this.response = res;
-      } catch (e) {
-        console.log(e);
-        this.response = true;
-      }
+      this.response = true;
+      // try {
+      //   const res = await this.$aws.listObjects();
+      //   this.response = res;
+      // } catch (e) {
+      //   console.log(e);
+      //   this.response = true;
+      // }
       this.buttonClicked = true;
       this.showAlert = true;
     },
@@ -154,7 +155,7 @@ export default {
   computed: {
     result() {
       if (this.buttonClicked) {
-        return this.response ? "Yes, baby!" : "No";
+        return this.response ? "Yes, Dr. Moritz!" : "No, Dr. Moritz!";
       } else return null;
     },
     color() {
