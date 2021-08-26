@@ -81,35 +81,47 @@
       </a>
       <div class="mt-8 bg-white overflow-hidden shadow sm:rounded-lg p-6">
         <h2 class="text-2xl leading-7 font-semibold">Welcome Moritz</h2>
-        <p class="mt-3 text-gray-600">
-          Has Acquire Media uploaded data to the S3 bucket? <br />
-        </p>
-        <div class="my-5 inline-flex rounded-md shadow">
-          <button
-            @click="listObjects"
-            class="
-              inline-flex
-              items-center
-              justify-center
-              px-5
-              py-3
-              border border-transparent
-              text-base
-              font-medium
-              rounded-md
-              text-white
-              bg-indigo-600
-              hover:bg-indigo-700
-            "
-          >
-            Click to check
-          </button>
+        <div>
+          <p class="mt-3 text-gray-600">
+            Has Acquire Media uploaded data to the S3 bucket? <br />
+          </p>
+          <div class="my-5 inline-flex rounded-md shadow">
+            <button
+              @click="listObjects"
+              :disabled="buttonClicked"
+              :class="`${
+                !buttonClicked
+                  ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                  : 'bg-gray-400 text-gray-100'
+              }`"
+              class="
+                inline-flex
+                items-center
+                justify-center
+                px-5
+                py-3
+                border border-transparent
+                text-base
+                font-medium
+                rounded-md
+              "
+            >
+              Click to check
+            </button>
+          </div>
         </div>
       </div>
-      <div v-if="buttonClicked" :class="color" class="mt-24 text-2xl">
-        {{ result }}
-      </div>
+      <transition name="fade">
+        <alert-notification
+          v-if="showAlert"
+          class="mt-10"
+          :color="color"
+          :text="result"
+          @close="showAlert = false"
+        />
+      </transition>
     </div>
+    >
   </div>
 </template>
 
@@ -122,6 +134,7 @@ export default {
       ip: null,
       response: null,
       buttonClicked: null,
+      showAlert: false,
     };
   },
 
@@ -133,19 +146,32 @@ export default {
       } catch (e) {
         console.log(e);
         this.response = true;
-        this.buttonClicked = true;
       }
+      this.buttonClicked = true;
+      this.showAlert = true;
     },
   },
   computed: {
     result() {
       if (this.buttonClicked) {
-        return this.result ? "Yes, baby!" : "No";
+        return this.response ? "Yes, baby!" : "No";
       } else return null;
     },
     color() {
-      return this.result ? "text-green-500" : "text-red-500";
+      return this.response ? "green" : "red";
     },
   },
 };
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
