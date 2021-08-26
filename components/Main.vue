@@ -80,7 +80,7 @@
         </svg>
       </a>
       <div class="mt-8 bg-white overflow-hidden shadow sm:rounded-lg p-6">
-        <h2 class="text-2xl leading-7 font-semibold">Welcome Moritz</h2>
+        <h2 class="text-2xl leading-7 font-semibold">Welcome Dr. Moritz</h2>
         <div>
           <p class="mt-3 text-gray-600">
             Has Acquire Media uploaded data to the S3 bucket? <br />
@@ -150,6 +150,18 @@ export default {
       // }
       this.buttonClicked = true;
       this.showAlert = true;
+
+      var style = "background:#eee; font-size:20px";
+      console.log("%cGood attitude, Dr. Moritz!", "color:blue; font-size:30px");
+
+      console.log(
+        "%cOf course you would want to verify, the data yourself. Unfortunately, all the advanced API calls happen before deploy. So you can't see. Anyway, maybe we can add that in the future.",
+        style
+      );
+      console.log(
+        "%cAll the best for today's endeavors! You will conquer it!",
+        style
+      );
     },
   },
   computed: {
